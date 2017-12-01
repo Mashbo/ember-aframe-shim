@@ -4,6 +4,7 @@
 const path = require('path');
 const Funnel = require('broccoli-funnel');
 const map = require('broccoli-stew').map;
+const mergeTrees = require('broccoli-merge-trees');
 
 const packageName = 'aframe';
 
