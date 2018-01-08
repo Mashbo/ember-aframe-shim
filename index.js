@@ -3,6 +3,8 @@
 
 const path = require('path');
 const Funnel = require('broccoli-funnel');
+const map = require('broccoli-stew').map;
+const mergeTrees = require('broccoli-merge-trees');
 
 const packageName = 'aframe';
 
@@ -23,10 +25,14 @@ module.exports = {
     });
   },
 
-  treeForVendor() {
-    return new Funnel(this.dirname, {
+  treeForVendor(defaultTree) {
+    let browserVendorLib = new Funnel(this.dirname, {
       files: [this.basename],
       destDir: packageName
     });
+    
+    browserVendorLib = map(browserVendorLib, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    
+    return new mergeTrees([defaultTree, browserVendorLib])
   }
 };
